@@ -20,3 +20,16 @@ RSpec::Matchers.define :have_error_message do |message|
 		expect(page).to have_selector('div.alert.alert-error', text: message)
 	end
 end
+
+def link_have_full_title(link, title)
+		click_link link
+		expect(page).to have_title(full_title(title))
+end
+    
+
+def fill_in_example
+  fill_in "Name",         with: "Example User"
+  fill_in "Email",        with: "user@example.com"
+  fill_in "Password",     with: "foobar"
+  fill_in "Confirmation", with: "foobar"
+end
