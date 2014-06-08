@@ -33,6 +33,7 @@ describe "Authentication" do
       before { sign_in user }
 
     	it { should have_title(user.name) }
+      it { should have_link('Users',       href: users_path) }
     	it { should have_link('Profile',		 href: user_path(user)) }
       it { should have_link('Settings',    href: edit_user_path(user)) }
     	it { should have_link('Sign out',		 href: signout_path) }
@@ -49,6 +50,7 @@ describe "Authentication" do
 
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
+      let(:non_admin) { FactoryGirl.create(:use)}
 
       describe "when attempting to visit a protected page" do
         before do
@@ -66,7 +68,6 @@ describe "Authentication" do
         end
       end
     
-
       describe "in the Users controller" do
 
         describe "visiting the edit page" do
@@ -77,6 +78,11 @@ describe "Authentication" do
         describe "submitting to the update action" do
           before { patch user_path(user) }
           specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "visiting the user page" do
+          before { visit users_path }
+          it { should have_title('Sign in') }
         end
       end
     end
@@ -94,6 +100,18 @@ describe "Authentication" do
 
       describe "submitting a PATCH request to the Users#update action" do
         before { patch user_path(wrong_user) }
+        specify { expect(response).to redirect_to(root_url) }
+      end
+    end
+
+    describe "as non-admin user" do
+      let(:user) { FactoryGirl.create(:user) }
+      let(:non_admin) { FactoryGirl.create(:user) }
+
+      before { sign_in non_admin, no_capybara: true }
+
+      describe "submitting a DELETE request to the User#desctroy action" do
+        before { delete user_path(user) }
         specify { expect(response).to redirect_to(root_url) }
       end
     end
