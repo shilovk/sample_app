@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140613163432) do
+ActiveRecord::Schema.define(version: 20140801160210) do
 
   create_table "microposts", force: true do |t|
     t.string   "content"
@@ -40,7 +40,21 @@ ActiveRecord::Schema.define(version: 20140613163432) do
     t.datetime "updated_at"
     t.string   "password_digest"
     t.string   "remember_token"
-    t.boolean  "admin",           default: false
+    t.boolean  "admin",                          default: false
+    t.string   "login",               limit: 40
+    t.string   "salt",                limit: 40
+    t.string   "real_name"
+    t.string   "attitude"
+    t.string   "home_phone"
+    t.string   "cell_phone"
+    t.text     "address"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.integer  "role"
+    t.datetime "last_activity"
+    t.boolean  "is_online"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
